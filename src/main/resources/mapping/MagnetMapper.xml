@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.message.mapper.MagnetMapper">
+    <select id="queryAllMagnet" resultType="com.message.entity.Magnet">
+        select * from magnet
+    </select>
+    <select id="queryMagnetByKey" resultType="com.message.entity.Magnet" parameterType="java.lang.String">
+        select *
+        from magnet
+        where name like CONCAT('%',#{key},'%')
+        or magnet like CONCAT('%',#{key},'%')
+    </select>
+    <select id="pagingQueryMagnet" resultType="com.message.entity.Magnet" parameterType="java.lang.Integer">
+        select *
+        from magnet
+        limit  #{currentPage},#{pageNum}
+    </select>
+    <insert id="addMagnet" parameterType="com.message.entity.Magnet">
+        insert into magnet(name,magnet)
+        values ('${name}','${magnet}')
+    </insert>
+    <delete id="deleteMagnet" parameterType="com.message.entity.Magnet">
+        delete from magnet
+        where name='${name}'
+        and magnet='${magnet}'
+    </delete>
+    <update id="updateMagnet" parameterType="com.message.entity.Magnet">
+        update magnet
+        set name=#{newMagnet.name},magnet=#{newMagnet.magnet}
+        where name=#{oldMagnet.name} and magnet=#{oldMagnet.magnet}
+    </update>
+    <select id="queryTimeReport" parameterType="java.lang.String" resultType="com.message.entity.Magnet">
+        select *
+        from magnet
+        where time between #{start} and #{end}
+    </select>
+</mapper>

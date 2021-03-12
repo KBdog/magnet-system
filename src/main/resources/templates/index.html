@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页：Hello World!</title>
+    <script src="js/jquery-3.5.1.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function jump1() {
+            var magnet_table=document.getElementById("table");
+            $.ajax({
+                url:"/queryMagnet/all",
+                type:"get",
+                dataType:"json",
+                data: [
+                    {
+                        name:"",
+                        magnet:""
+                    }
+                ],
+                contentType: "application/json",
+                success: function (data) {
+                    //清空表格
+                    var length=magnet_table.rows.length;
+                    for(var i=0;i<length;i++){
+                        magnet_table.deleteRow(0);
+                    }
+
+                    //拼接字符串的方式把数据插入表格
+                    var json=data;
+                    var tr="";
+                    for(var i=0;i<json.length;i++){
+                        tr="<td width='400px'>"+json[i].name+"</td>>"+"<td width='800px'>"+json[i].magnet+"</td>";
+                        $("#table").append("<tr>"+tr+"</tr>");
+                    }
+                }
+            });
+        }
+
+        function jump2() {
+            var magnet_table=document.getElementById("table");
+            var keyword=document.getElementById("keyword").value;
+            $.ajax({
+                url:"/queryMagnet/keyword/"+keyword,
+                type: "get",
+                dataType: "json",
+                data:[
+                    {
+                        name:"",
+                        magnet:""
+                    }
+                ],
+                contentType: "application/json",
+                success: function (data) {
+                    //清空表格
+                    var length=magnet_table.rows.length;
+                    for(var i=0;i<length;i++){
+                        magnet_table.deleteRow(0);
+                    }
+
+                    //拼接字符串的方式把数据插入表格
+                    var json=data;
+                    var tr="";
+                    for(var i=0;i<json.length;i++){
+                        tr="<td width='400px'>"+json[i].name+"</td>>"+"<td width='800px'>"+json[i].magnet+"</td>";
+                        $("#table").append("<tr>"+tr+"</tr>");
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<h1>你好spring boot!</h1>
+<br>
+<input type="button" value="查询所有磁力链接" id="button1" onclick="jump1()">
+<br>
+<input type="text" id="keyword" autocomplete="off">
+<input type="button" value="查询部分磁力链接" id="button2" onclick="jump2()">
+<br>
+<div id="test">
+    磁力信息：
+    <table id="table" border="1" cellspacing="0" cellpadding="0" class="magnet_table" text-align="center" >
+        <tr>
+            <td width="400px">资源名</td>
+            <td width="800px">磁力链接</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
