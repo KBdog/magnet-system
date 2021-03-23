@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.message.annotation.PassLogin;
 import com.message.entity.Account;
 import com.message.entity.Magnet;
 import com.message.service.AccountService;
@@ -20,16 +21,19 @@ public class UsersController {
     @Autowired
     private AccountService service;
     //查询所有用户
+    @PassLogin
     @RequestMapping("/all")
     private List<Account>queryAllUser(){
         return service.queryAll();
     }
     //分页查询
+    @PassLogin
     @RequestMapping("/all/{currentPage}/{pageNum}")
     private List<Account> pagingQueryMagnet(@PathVariable("currentPage") Integer currentPage, @PathVariable("pageNum") Integer pageNum){
         return service.pagingQueryAccount((currentPage-1)*pageNum,pageNum);
     }
     //模糊查询
+    @PassLogin
     @RequestMapping("/keyword")
     private List<Account> queryMagnetByKey(@RequestBody Map<String,String> jsonKeyword) throws JsonProcessingException {
         String keyword="";
@@ -40,6 +44,7 @@ public class UsersController {
         return service.queryAccountByKey(keyword);
     }
     //添加用户
+    @PassLogin
     @RequestMapping("/add_user")
     private boolean addUser(@RequestBody String jsonString) throws JsonProcessingException {
         boolean flag=false;
@@ -66,6 +71,7 @@ public class UsersController {
         }
     }
     //查看用户是否存在
+    @PassLogin
     @RequestMapping("/check")
     private boolean checkExist(@RequestParam("username")String username){
         boolean flag=true;
@@ -76,6 +82,7 @@ public class UsersController {
         return flag;
     }
     //根据uid删除用户
+    @PassLogin
     @RequestMapping("/delete")
     private boolean deleteUser(@RequestParam("uid") Integer uid){
         boolean flag=false;
@@ -88,6 +95,7 @@ public class UsersController {
         return flag;
     }
     //更新用户
+    @PassLogin
     @RequestMapping("/update")
     private boolean updateUser(@RequestBody String jsonString){
         boolean flag=false;
@@ -104,6 +112,7 @@ public class UsersController {
         return flag;
     }
     //根据id查用户
+    @PassLogin
     @RequestMapping("/id")
     private Account queryById(@RequestParam("uid")Integer id){
         return service.queryById(id);

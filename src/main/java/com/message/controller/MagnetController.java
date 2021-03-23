@@ -1,7 +1,10 @@
 package com.message.controller;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.message.annotation.PassLogin;
 import com.message.entity.Magnet;
+import com.message.httpresponse.ResponseResult;
 import com.message.service.MagnetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,26 +23,29 @@ public class MagnetController {
     private MagnetService service;
 
     //查询所有磁力链接
+    @PassLogin
     @RequestMapping(value = "/all",method = RequestMethod.GET)
     private List<Magnet> queryAllMagnet(){
         return service.queryAllMagnet();
     };
     //模糊查询
+    //模糊查询要检查token,不加passlogin注释
     @RequestMapping("/keyword/")
-    private List<Magnet> queryMagnetByKey(@RequestBody Map<String,String> jsonKeyword) throws JsonProcessingException {
-        String keyword="";
-        for (Map.Entry<String, String> tmp:jsonKeyword.entrySet()) {
-            keyword=tmp.getValue();
-        }
+    private ResponseResult queryMagnetByKey(@RequestBody String jsonString) throws JsonProcessingException {
+        JSONObject jsonObject = JSONObject.parseObject(jsonString);
+        String keyword = jsonObject.getString("keyword");
         System.out.println("keyword:"+keyword);
-        return service.queryMagnetByKey(keyword);
+        List<Magnet> magnetList=service.queryMagnetByKey(keyword);
+        return ResponseResult.ok(magnetList);
     };
     //分页查询
+    @PassLogin
     @RequestMapping("/all/{currentPage}/{pageNum}")
     private List<Magnet> pagingQueryMagnet(@PathVariable("currentPage") Integer currentPage,@PathVariable("pageNum") Integer pageNum){
         return service.pagingQueryMagnet((currentPage-1)*pageNum,pageNum);
     }
     //添加磁力
+    @PassLogin
     @RequestMapping("/add_magnet/")
     private boolean addMagnet(@RequestBody String jsonString) throws JsonProcessingException {
         boolean flag=false;
@@ -66,6 +72,7 @@ public class MagnetController {
         }
     }
     //删除磁力
+    @PassLogin
     @RequestMapping("/delete_magnet/")
     private boolean deleteMagnet(@RequestBody String jsonString) throws JsonProcessingException {
         boolean flag=false;
@@ -84,6 +91,7 @@ public class MagnetController {
         return flag;
     }
     //编辑磁力
+    @PassLogin
     @RequestMapping("/update_magnet/")
     private boolean updateMagnet(@RequestBody String jsonObject) throws JsonProcessingException {
         boolean flag=false;
@@ -103,6 +111,7 @@ public class MagnetController {
     }
 
     //查询某个时间段收录的磁力
+    @PassLogin
     @RequestMapping("/query_TimeReport/")
     private List<Magnet> queryTimeReport(@RequestBody Map<String,String> jsonTimeRange) throws JsonProcessingException {
         String []time=new String[2];
@@ -120,6 +129,7 @@ public class MagnetController {
     }
 
     //下载excel
+    @PassLogin
     @RequestMapping("/downloadExcel")
     private void downloadExcel(@RequestBody String jsonString,HttpServletResponse response) throws IOException {
         ObjectMapper mapper=new ObjectMapper();
@@ -178,11 +188,13 @@ public class MagnetController {
     }
 
     //每月收录磁力数
+    @PassLogin
     @RequestMapping("/count")
     private Integer countMagnet(@RequestParam("start")String start,@RequestParam("end")String end){
         return service.countMagnet(start,end);
     }
     //test
+    @PassLogin
     @RequestMapping(value = "/test",method = RequestMethod.POST)
     private void test(@RequestBody Magnet receive){
         Magnet magnet=receive;

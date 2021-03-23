@@ -1,8 +1,10 @@
 package com.message.config;
 
 import com.message.interceptor.ApiInterceptor;
+import com.message.interceptor.TokenInterceptor;
 import com.message.service.MagnetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -14,7 +16,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
     //拦截器设置
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new ApiInterceptor()).addPathPatterns("/**");
+//        registry.addInterceptor(new ApiInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(tokenInterceptor()).addPathPatterns("/**");
+    }
+
+    @Bean
+    public TokenInterceptor tokenInterceptor(){
+        return new TokenInterceptor();
     }
 
     //跨域设置
@@ -33,4 +41,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 // 跨域允许时间
                 .maxAge(3600);
     }
+
 }
