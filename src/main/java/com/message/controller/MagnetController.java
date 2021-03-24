@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.message.annotation.PassLogin;
 import com.message.entity.Magnet;
-import com.message.httpresponse.ResponseResult;
+import com.message.http.ResponseResult;
 import com.message.service.MagnetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

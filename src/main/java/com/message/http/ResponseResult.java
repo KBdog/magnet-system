@@ -1,4 +1,4 @@
-package com.message.httpresponse;
+package com.message.http;
 
 
 import java.io.Serializable;

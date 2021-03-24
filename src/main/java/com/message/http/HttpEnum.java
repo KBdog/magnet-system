@@ -1,4 +1,4 @@
-package com.message.httpresponse;
+package com.message.http;
 
 
 public enum HttpEnum {

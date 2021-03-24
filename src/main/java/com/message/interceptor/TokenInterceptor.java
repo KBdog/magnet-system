@@ -2,7 +2,7 @@ package com.message.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.message.annotation.PassLogin;
-import com.message.httpresponse.ResponseResult;
+import com.message.http.ResponseResult;
 import com.message.utils.JWTUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;

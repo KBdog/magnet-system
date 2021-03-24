@@ -1,17 +1,14 @@
 package com.message.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.message.annotation.PassLogin;
 import com.message.entity.Account;
-import com.message.httpresponse.ResponseResult;
+import com.message.http.ResponseResult;
 import com.message.service.AccountService;
 import com.message.utils.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
