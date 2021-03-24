@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.message.annotation.PassLogin;
 import com.message.entity.Account;
 import com.message.entity.Magnet;
+import com.message.httpresponse.ResponseResult;
 import com.message.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,26 +24,38 @@ public class UsersController {
     //查询所有用户
     @PassLogin
     @RequestMapping("/all")
-    private List<Account>queryAllUser(){
-        return service.queryAll();
+    private ResponseResult queryAllUser(){
+        List<Account>accountList=service.queryAll();
+        return ResponseResult.ok(accountList);
     }
     //分页查询
     @PassLogin
     @RequestMapping("/all/{currentPage}/{pageNum}")
-    private List<Account> pagingQueryMagnet(@PathVariable("currentPage") Integer currentPage, @PathVariable("pageNum") Integer pageNum){
-        return service.pagingQueryAccount((currentPage-1)*pageNum,pageNum);
+    private ResponseResult pagingQueryMagnet(@PathVariable("currentPage") Integer currentPage, @PathVariable("pageNum") Integer pageNum){
+        List<Account>accountList=service.pagingQueryAccount((currentPage-1)*pageNum,pageNum);
+        return ResponseResult.ok(accountList);
     }
     //模糊查询
     @PassLogin
     @RequestMapping("/keyword")
-    private List<Account> queryMagnetByKey(@RequestBody Map<String,String> jsonKeyword) throws JsonProcessingException {
+    private ResponseResult queryMagnetByKey(@RequestBody Map<String,String> jsonKeyword) throws JsonProcessingException {
         String keyword="";
         for (Map.Entry<String, String> tmp:jsonKeyword.entrySet()) {
             keyword=tmp.getValue();
         }
         System.out.println("keyword:"+keyword);
-        return service.queryAccountByKey(keyword);
+        List<Account>accountList=service.queryAccountByKey(keyword);
+        return ResponseResult.ok(accountList);
     }
+    //根据id查用户
+    @PassLogin
+    @RequestMapping("/id")
+    private Account queryById(@RequestParam("uid")Integer id){
+        return service.queryById(id);
+    }
+
+
+
     //添加用户
     @PassLogin
     @RequestMapping("/add_user")
@@ -111,10 +124,5 @@ public class UsersController {
         }
         return flag;
     }
-    //根据id查用户
-    @PassLogin
-    @RequestMapping("/id")
-    private Account queryById(@RequestParam("uid")Integer id){
-        return service.queryById(id);
-    }
+
 }
