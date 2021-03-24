@@ -25,8 +25,9 @@ public class MagnetController {
     //查询所有磁力链接
     @PassLogin
     @RequestMapping(value = "/all",method = RequestMethod.GET)
-    private List<Magnet> queryAllMagnet(){
-        return service.queryAllMagnet();
+    private ResponseResult queryAllMagnet(){
+        List<Magnet> magnetList=service.queryAllMagnet();
+        return ResponseResult.ok(magnetList);
     };
     //模糊查询
     //模糊查询要检查token,不加passlogin注释
@@ -41,8 +42,9 @@ public class MagnetController {
     //分页查询
     @PassLogin
     @RequestMapping("/all/{currentPage}/{pageNum}")
-    private List<Magnet> pagingQueryMagnet(@PathVariable("currentPage") Integer currentPage,@PathVariable("pageNum") Integer pageNum){
-        return service.pagingQueryMagnet((currentPage-1)*pageNum,pageNum);
+    private ResponseResult pagingQueryMagnet(@PathVariable("currentPage") Integer currentPage,@PathVariable("pageNum") Integer pageNum){
+        List<Magnet>magnetList=service.pagingQueryMagnet((currentPage-1)*pageNum,pageNum);
+        return ResponseResult.ok(magnetList);
     }
     //添加磁力
     @PassLogin
@@ -113,7 +115,7 @@ public class MagnetController {
     //查询某个时间段收录的磁力
     @PassLogin
     @RequestMapping("/query_TimeReport/")
-    private List<Magnet> queryTimeReport(@RequestBody Map<String,String> jsonTimeRange) throws JsonProcessingException {
+    private ResponseResult queryTimeReport(@RequestBody Map<String,String> jsonTimeRange) throws JsonProcessingException {
         String []time=new String[2];
         String start="";
         String end="";
@@ -125,7 +127,8 @@ public class MagnetController {
         start=time[0]+" 00:00:00";
         end=time[1]+" 23:59:59";
         System.out.println("起始时间:"+start+"\n"+"结束时间:"+end);
-        return service.queryTimeReport(start,end);
+        List<Magnet> magnetList=service.queryTimeReport(start,end);
+        return ResponseResult.ok(magnetList);
     }
 
     //下载excel
@@ -193,6 +196,9 @@ public class MagnetController {
     private Integer countMagnet(@RequestParam("start")String start,@RequestParam("end")String end){
         return service.countMagnet(start,end);
     }
+
+
+
     //test
     @PassLogin
     @RequestMapping(value = "/test",method = RequestMethod.POST)

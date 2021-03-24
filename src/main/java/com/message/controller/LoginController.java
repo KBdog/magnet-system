@@ -45,7 +45,7 @@ public class LoginController {
             Map<String,String>message=new HashMap<>();
             message.put("isLogin","true");
             message.put("uuid",account.getUid().toString());
-            message.put("loginMessage","登录成功");
+            message.put("message","登录成功");
             message.put("token",response.getHeader(jwtUtils.getHeader()));
             return ResponseResult.ok(message);
         }else {
@@ -53,48 +53,18 @@ public class LoginController {
             Map<String,String>message=new HashMap<>();
             message.put("isLogin","false");
             message.put("message","登录失败");
-            return ResponseResult.ok(message);
+//            return ResponseResult.ok(message);
+            return ResponseResult.unauthorized(message);
         }
     }
-    //token测试
-    @RequestMapping("/test")
-    public ResponseResult validateToken(HttpServletRequest request){
-        Long userId=Long.parseLong(request.getAttribute("subject").toString());
-        System.out.println("发起请求的用户uid:"+userId);
-        ResponseResult result=ResponseResult.ok(userId);
-        return result;
-    }
 
 
-    //查询账户
-    @RequestMapping("/validate_old")
-    public boolean validate(@RequestBody String json){
-        boolean flag=false;
-        JSONObject jsonObject=JSONObject.parseObject(json);
-        //json格式化
-//        String jsonString= JSON.toJSONString(jsonObject, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue,
-//                SerializerFeature.WriteDateUseDateFormat);
-        //获取属性
-        String accountString = jsonObject.getString("account");
-        String passwordString = jsonObject.getString("password");
-        Account account=new Account();
-        account.setAccount(accountString);
-        account.setPassword(passwordString);
-        Integer integer = service.validateAccount(account);
-        if(integer>0){
-            System.out.println("登录成功");
-            flag=true;
-        }else {
-            System.out.println("登录失败");
-            flag=false;
-        }
-        return flag;
-    }
 
-    //获取账户信息
+
+    //登录完成获取账户信息
     @PassLogin
     @RequestMapping("/message")
-    public Account getAccount(@RequestBody String json){
+    public ResponseResult getAccount(@RequestBody String json){
         JSONObject jsonObject=JSONObject.parseObject(json);
         //获取属性
         String accountString = jsonObject.getString("account");
@@ -102,6 +72,7 @@ public class LoginController {
         Account account=new Account();
         account.setAccount(accountString);
         account.setPassword(passwordString);
-        return service.getAccount(account);
+        Account resultAccount = service.getAccount(account);
+        return ResponseResult.ok(resultAccount);
     }
 }

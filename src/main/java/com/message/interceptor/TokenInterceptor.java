@@ -5,11 +5,7 @@ import com.message.annotation.PassLogin;
 import com.message.httpresponse.ResponseResult;
 import com.message.utils.JWTUtils;
 import io.jsonwebtoken.Claims;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -69,34 +65,6 @@ public class TokenInterceptor implements HandlerInterceptor {
             request.setAttribute("subject",subject);
             return true;
         }
-
-//        // 从HTTP请求头中获取Authorization信息，
-//        String authorization = request.getHeader(jwtUtil.getHeader());
-//        System.out.println(authorization);
-//        //判断Authorization是否为空
-//        if(StringUtils.isEmpty(authorization)){
-//            response.getWriter().write(JSONObject.toJSONString(ResponseResult.unauthorized()));
-//            return false;
-//        }
-//        //获取TOKEN,注意要清除前缀"Bearer "
-//        String token = authorization.replace("Bearer ","");
-//        // HTTP请求头中TOKEN解析出的用户信息
-//        Claims claims = jwtUtil.parseToken(token);
-//        if(claims == null){
-//            response.getWriter().write(JSONObject.toJSONString(ResponseResult.unauthorized()));
-//            return false;
-//        }
-//        //校验是否过期
-//        boolean flag = jwtUtil.isExpired(claims.getExpiration());
-//        if(flag){
-//            response.getWriter().write(JSONObject.toJSONString(ResponseResult.unauthorized()));
-//            return false;
-//        }
-//        //token正常，获取用户信息，比如这里的subject存的是用户id
-//        String subject = claims.getSubject();
-//        //将用户信息存入request，以便后面处理请求使用
-//        request.setAttribute("subject",subject);
-//        return true;
     }
 
     @Override
