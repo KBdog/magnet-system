@@ -46,4 +46,4 @@ custom:
     # secret: 秘钥(普通字符串) 不能太短，太短可能会导致报错
     secret: 99c2918fe19d30bce25abfac8a3733ec
     # 签发者
-    issuer: lipeiyu
+    issuer: kbdog
