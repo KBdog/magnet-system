@@ -29,7 +29,7 @@
     <delete id="batchDeleteMagnet">
         delete from magnet
         where name in
-        <foreach collection="list" item="magnetName" index="index" open="(" separator="," close=")">
+        <foreach collection="nameList" item="magnetName" index="index" open="(" separator="," close=")">
             #{magnetName}
         </foreach>
     </delete>
