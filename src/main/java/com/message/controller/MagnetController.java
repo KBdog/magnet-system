@@ -169,49 +169,6 @@ public class MagnetController {
         }else {
             System.out.println("下载失败");
         }
-
-
-        //下载
-//        String filePath="C:/Users/Lenovo/Desktop/test/bg1.jpg";
-//        File file=new File(filePath);
-//        byte []cache=new byte[1024];
-//        response.setHeader("content-type", "application/octet-stream");
-//        response.setContentType("application/octet-stream");
-//        response.setHeader("Content-Disposition", "attachment;fileName=" + file.getName());
-//        //各种流
-//        FileInputStream inputStream=null;
-//        BufferedInputStream bufferedInputStream=null;
-//        ServletOutputStream outputStream=null;
-//        try {
-//            //把文件读入输入流
-//            inputStream=new FileInputStream(file);
-//            //把输入流读入输入缓冲流
-//            bufferedInputStream=new BufferedInputStream(inputStream);
-//            //获取输出流
-//            outputStream=response.getOutputStream();
-//            //把缓冲流中数据读入缓存
-//            int i=bufferedInputStream.read(cache);
-//            while(i!=-1){
-//                outputStream.write(cache,0,cache.length);
-//                outputStream.flush();
-//                i=bufferedInputStream.read(cache);
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }finally {
-//            try {
-//                //关闭流
-//                bufferedInputStream.close();
-//                outputStream.close();
-//                inputStream.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
-
     }
 
     //每月收录磁力数
