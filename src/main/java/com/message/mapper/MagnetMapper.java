@@ -18,4 +18,5 @@ public interface MagnetMapper {
     List<Magnet> queryTimeReport(@Param("start") String start,@Param("end") String end);
     @Select("select count(*) from magnet where time between #{start} and #{end}")
     Integer countMagnet(@Param("start") String start,@Param("end") String end);
+    Integer batchDeleteMagnet(List<String> magnetNameList);
 }

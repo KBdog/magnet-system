@@ -18,4 +18,5 @@ public interface MagnetService {
     List <Magnet> queryTimeReport(String start,String end);
     boolean downloadExcel(Magnet magnets[], ServletOutputStream out,String titles[]);
     Integer countMagnet(String start,String end);
+    Integer batchDeleteMagnet(List<String> magnetNameList);
 }

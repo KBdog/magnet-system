@@ -79,6 +79,8 @@ GET `127.0.0.1:8082/all/{currentPage}/{pageNum}`
 PUT `127.0.0.1:8082/add_magnet/`
 ### 删除磁力
 DELETE `127.0.0.1:8082/delete_magnet/`
+### 批量删除磁力
+DELETE `127.0.0.1:8082/batch/delete`
 ### 编辑磁力
 PUT `127.0.0.1:8082/update_magnet/`
 ### 时段收录磁力

@@ -25,6 +25,14 @@
         where name='${name}'
         and magnet='${magnet}'
     </delete>
+    <!--批量删除磁力-->
+    <delete id="batchDeleteMagnet">
+        delete from magnet
+        where name in
+        <foreach collection="list" item="magnetName" index="index" open="(" separator="," close=")">
+            #{magnetName}
+        </foreach>
+    </delete>
     <update id="updateMagnet" parameterType="com.message.entity.Magnet">
         update magnet
         set name=#{newMagnet.name},magnet=#{newMagnet.magnet}

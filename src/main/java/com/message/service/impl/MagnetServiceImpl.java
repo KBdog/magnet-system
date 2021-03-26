@@ -65,4 +65,9 @@ public class MagnetServiceImpl implements MagnetService {
     public Integer countMagnet(String start, String end) {
         return mapper.countMagnet(start,end);
     }
+
+    @Override
+    public Integer batchDeleteMagnet(List<String> magnetNameList) {
+        return mapper.batchDeleteMagnet(magnetNameList);
+    }
 }

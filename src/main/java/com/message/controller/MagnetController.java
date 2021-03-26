@@ -1,4 +1,5 @@
 package com.message.controller;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -91,6 +94,27 @@ public class MagnetController {
             flag=false;
         }
         return flag;
+    }
+    //批量删除磁力
+    @PassLogin
+    @RequestMapping("/batch/delete")
+    private ResponseResult batchDeleteMagnet(@RequestBody String jsonString){
+        JSONArray jsonArray = JSONArray.parseArray(jsonString);
+        List<String> magnetNameList=new ArrayList<>();
+        for(int i=0;i<jsonArray.size();i++){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            magnetNameList.add(jsonObject.getString("name"));
+        }
+        Integer count=service.batchDeleteMagnet(magnetNameList);
+        System.out.println("删除了"+count+"条磁力信息");
+        Map<String ,Object>message=new HashMap<>();
+        message.put("total",count);
+        if(count>0){
+            message.put("result",true);
+        }else {
+            message.put("result",false);
+        }
+        return ResponseResult.ok(message);
     }
     //编辑磁力
     @PassLogin
