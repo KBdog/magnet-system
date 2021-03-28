@@ -5,12 +5,20 @@
     <select id="queryAllMagnet" resultType="com.message.entity.Magnet">
         select * from magnet
     </select>
+    <!--模糊查询-->
+<!--    <select id="queryMagnetByKey" resultType="com.message.entity.Magnet" parameterType="java.lang.String">-->
+<!--        select *-->
+<!--        from magnet-->
+<!--        where name like CONCAT('%',#{key},'%')-->
+<!--        or magnet like CONCAT('%',#{key},'%')-->
+<!--    </select>-->
+    <!--分词查询:替代模糊查询-->
     <select id="queryMagnetByKey" resultType="com.message.entity.Magnet" parameterType="java.lang.String">
-        select *
-        from magnet
-        where name like CONCAT('%',#{key},'%')
-        or magnet like CONCAT('%',#{key},'%')
+        select * from magnet
+        where match (name)
+        against(#{key})
     </select>
+
     <select id="pagingQueryMagnet" resultType="com.message.entity.Magnet" parameterType="java.lang.Integer">
         select *
         from magnet
