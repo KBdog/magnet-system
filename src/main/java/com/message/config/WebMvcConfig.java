@@ -13,17 +13,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //webmvc配置
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+    @Autowired
+    private TokenInterceptor tokenInterceptor;
     //拦截器设置
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 //        registry.addInterceptor(new ApiInterceptor()).addPathPatterns("/**");
-        registry.addInterceptor(tokenInterceptor()).addPathPatterns("/**");
+//        registry.addInterceptor(tokenInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(tokenInterceptor).addPathPatterns("/**");
     }
 
-    @Bean
-    public TokenInterceptor tokenInterceptor(){
-        return new TokenInterceptor();
-    }
+//    @Bean
+//    public TokenInterceptor tokenInterceptor(){
+//        return new TokenInterceptor();
+//    }
 
     //跨域设置
     @Override
