@@ -12,8 +12,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 //全局异常处理
 @ControllerAdvice
-@Component
-public class MvcExceptionHandler {
+public class WebMvcExceptionHandler {
     //restful请求方式错误
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     @ResponseBody
@@ -22,7 +21,7 @@ public class MvcExceptionHandler {
         return ResponseResult.invalid_request();
     }
 
-    //请求参数格式错误:不带body
+    //请求参数格式错误:如post请求不带body
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     @ResponseBody
     public ResponseResult messageNotReadableHandler(HttpMessageNotReadableException e){
@@ -30,7 +29,7 @@ public class MvcExceptionHandler {
         return ResponseResult.invalid_request();
     }
 
-    //请求参数格式错误:json解析错误
+    //请求参数格式错误:自定义json解析错误异常
     @ExceptionHandler(value = InvalidRequestException.class)
     @ResponseBody
     public ResponseResult invalidateRequestHandler(InvalidRequestException e){
@@ -38,7 +37,7 @@ public class MvcExceptionHandler {
         return ResponseResult.invalid_request();
     }
 
-    //请求参数格式错误:json解析错误
+    //请求参数格式错误:默认json解析错误异常
     @ExceptionHandler(value = JSONException.class)
     @ResponseBody
     public ResponseResult jsonParseHandler(JSONException e){
@@ -54,7 +53,7 @@ public class MvcExceptionHandler {
         return ResponseResult.notFound();
     }
 
-    //服务器内部异常
+    //其他情况:服务器内部异常
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public ResponseResult serverHandler(Exception e){
