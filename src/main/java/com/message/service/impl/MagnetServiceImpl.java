@@ -5,15 +5,12 @@ import com.message.mapper.MagnetMapper;
 import com.message.service.MagnetService;
 import com.message.utils.MagnetDownloadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletOutputStream;
 import java.util.List;
 
-@Component
 @Service
 //autowired自动装配优先选择此实现类
 @Primary

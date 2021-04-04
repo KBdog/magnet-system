@@ -1,6 +1,5 @@
 package com.message.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.message.entity.Account;
 import com.message.mapper.AccountMapper;
@@ -8,13 +7,11 @@ import com.message.service.AccountService;
 import com.message.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 
-@Component
 @Service
 @Primary
 public class AccountServiceImpl implements AccountService {

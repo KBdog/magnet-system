@@ -5,9 +5,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.message.annotation.PassLogin;
 import com.message.entity.Magnet;
+import com.message.exception.InvalidRequestException;
+import com.message.http.HttpEnum;
 import com.message.http.ResponseResult;
 import com.message.service.MagnetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
@@ -31,17 +34,21 @@ public class MagnetController {
     private ResponseResult queryAllMagnet(){
         List<Magnet> magnetList=service.queryAllMagnet();
         return ResponseResult.ok(magnetList);
-    };
+    }
     //模糊查询
     //模糊查询要检查token,不加passlogin注释
     @RequestMapping("/keyword/")
-    private ResponseResult queryMagnetByKey(@RequestBody String jsonString) throws JsonProcessingException {
+    private ResponseResult queryMagnetByKey(@RequestBody String jsonString) throws Exception {
         JSONObject jsonObject = JSONObject.parseObject(jsonString);
         String keyword = jsonObject.getString("keyword");
+        if(jsonObject.size()!=1||keyword==null){
+            //抛请求参数格式错误异常
+            throw new InvalidRequestException(HttpEnum.INVALID_REQUEST);
+        }
         System.out.println("keyword:"+keyword);
         List<Magnet> magnetList=service.queryMagnetByKey(keyword);
         return ResponseResult.ok(magnetList);
-    };
+    }
     //分页查询
     @PassLogin
     @RequestMapping("/all/{currentPage}/{pageNum}")
