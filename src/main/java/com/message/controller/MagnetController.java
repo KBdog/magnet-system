@@ -10,7 +10,6 @@ import com.message.http.HttpEnum;
 import com.message.http.ResponseResult;
 import com.message.service.MagnetService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
@@ -37,8 +36,8 @@ public class MagnetController {
     }
     //模糊查询
     //模糊查询要检查token,不加passlogin注释
-    @RequestMapping("/keyword/")
-    private ResponseResult queryMagnetByKey(@RequestBody String jsonString) throws Exception {
+    @RequestMapping(value="/keyword",method = RequestMethod.POST)
+    private ResponseResult queryMagnetByKey(@RequestBody String jsonString){
         JSONObject jsonObject = JSONObject.parseObject(jsonString);
         String keyword = jsonObject.getString("keyword");
         if(jsonObject.size()!=1||keyword==null){
@@ -51,14 +50,14 @@ public class MagnetController {
     }
     //分页查询
     @PassLogin
-    @RequestMapping("/all/{currentPage}/{pageNum}")
+    @RequestMapping(value="/all/{currentPage}/{pageNum}",method = RequestMethod.GET)
     private ResponseResult pagingQueryMagnet(@PathVariable("currentPage") Integer currentPage,@PathVariable("pageNum") Integer pageNum){
         List<Magnet>magnetList=service.pagingQueryMagnet((currentPage-1)*pageNum,pageNum);
         return ResponseResult.ok(magnetList);
     }
     //添加磁力
     @PassLogin
-    @RequestMapping("/add_magnet/")
+    @RequestMapping(value = "/add_magnet",method = RequestMethod.POST)
     private boolean addMagnet(@RequestBody String jsonString) throws JsonProcessingException {
         boolean flag=false;
         //解析json字符串
@@ -85,7 +84,7 @@ public class MagnetController {
     }
     //删除磁力
     @PassLogin
-    @RequestMapping("/delete_magnet/")
+    @RequestMapping(value="/delete_magnet",method = RequestMethod.DELETE)
     private boolean deleteMagnet(@RequestBody String jsonString) throws JsonProcessingException {
         boolean flag=false;
         //解析json字符串
@@ -104,7 +103,7 @@ public class MagnetController {
     }
     //批量删除磁力
     @PassLogin
-    @RequestMapping("/batch/delete")
+    @RequestMapping(value = "/batch/delete",method = RequestMethod.DELETE)
     private ResponseResult batchDeleteMagnet(@RequestBody String jsonString){
         JSONArray jsonArray = JSONArray.parseArray(jsonString);
         List<String> magnetNameList=new ArrayList<>();
@@ -125,7 +124,7 @@ public class MagnetController {
     }
     //编辑磁力
     @PassLogin
-    @RequestMapping("/update_magnet/")
+    @RequestMapping(value="/update_magnet",method = RequestMethod.PUT)
     private boolean updateMagnet(@RequestBody String jsonObject) throws JsonProcessingException {
         boolean flag=false;
         //解析json数组（含多个对象）
@@ -145,8 +144,8 @@ public class MagnetController {
 
     //查询某个时间段收录的磁力
     @PassLogin
-    @RequestMapping("/query_TimeReport/")
-    private ResponseResult queryTimeReport(@RequestBody Map<String,String> jsonTimeRange) throws JsonProcessingException {
+    @RequestMapping(value = "/query_TimeReport",method = RequestMethod.POST)
+    private ResponseResult queryTimeReport(@RequestBody Map<String,String> jsonTimeRange){
         String []time=new String[2];
         String start="";
         String end="";
@@ -164,7 +163,7 @@ public class MagnetController {
 
     //下载excel
     @PassLogin
-    @RequestMapping("/downloadExcel")
+    @RequestMapping(value="/downloadExcel",method = RequestMethod.POST)
     private void downloadExcel(@RequestBody String jsonString,HttpServletResponse response) throws IOException {
         ObjectMapper mapper=new ObjectMapper();
         Magnet[] magnets = mapper.readValue(jsonString, Magnet[].class);
@@ -180,18 +179,8 @@ public class MagnetController {
 
     //每月收录磁力数
     @PassLogin
-    @RequestMapping("/count")
+    @RequestMapping(value = "/count",method = RequestMethod.GET)
     private Integer countMagnet(@RequestParam("start")String start,@RequestParam("end")String end){
         return service.countMagnet(start,end);
-    }
-
-
-
-    //test
-    @PassLogin
-    @RequestMapping(value = "/test",method = RequestMethod.POST)
-    private void test(@RequestBody Magnet receive){
-        Magnet magnet=receive;
-        System.out.println(magnet.toString());
     }
 }

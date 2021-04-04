@@ -60,7 +60,7 @@ public class LoginController {
 
     //登录完成获取账户信息
     @PassLogin
-    @RequestMapping("/message")
+    @RequestMapping(value = "/message",method = RequestMethod.POST)
     public ResponseResult getAccount(@RequestBody String json){
         JSONObject jsonObject=JSONObject.parseObject(json);
         //获取属性
