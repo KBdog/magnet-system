@@ -44,6 +44,10 @@ mvc:
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml
   type-aliases-package: com.message.entity
+  #configuration:
+    #打印sql
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
 # jwt 配置
 custom:
   jwt:
