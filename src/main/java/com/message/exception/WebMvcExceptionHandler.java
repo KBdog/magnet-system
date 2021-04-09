@@ -8,10 +8,12 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 //全局异常处理
 @ControllerAdvice
+@RestController
 public class WebMvcExceptionHandler {
     //restful请求方式错误
 //    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
@@ -49,16 +51,14 @@ public class WebMvcExceptionHandler {
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class,
             HttpMessageNotReadableException.class,InvalidRequestException.class,
             JSONException.class})
-    @ResponseBody
     public ResponseResult paramError(Exception e){
-        System.out.println("请求方式或参数参数错误:"+e.getMessage());
+        System.out.println("请求方式或参数错误:"+e.getMessage());
         return ResponseResult.invalid_request();
     }
 
 
     //资源不存在
     @ExceptionHandler(value = NoHandlerFoundException.class)
-    @ResponseBody
     public  ResponseResult notFoundHandler(NoHandlerFoundException e){
         System.out.println("资源不存在:"+e.getMessage());
         return ResponseResult.notFound();
@@ -66,7 +66,6 @@ public class WebMvcExceptionHandler {
 
     //其他情况:服务器内部异常
     @ExceptionHandler(value = Exception.class)
-    @ResponseBody
     public ResponseResult serverHandler(Exception e){
         System.out.println("服务器异常:"+e.getMessage());
         e.printStackTrace();
