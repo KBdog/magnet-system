@@ -47,7 +47,7 @@ public class MagnetController {
             throw new InvalidRequestException(HttpEnum.INVALID_REQUEST);
         }
         Integer subjectUid=Integer.parseInt((String) request.getAttribute("subject"));
-        //对发送token的用户uid进行验证，防止其他用户模拟token发送请求
+        //对发送token的用户uid进行验证，防止其他用户冒用token
         if(subjectUid!=uid){
             System.out.println("用户uid跟token对应不上:"+"用户uid-"+uid+"|token_uid-"+subjectUid);
             return ResponseResult.unauthorized();
