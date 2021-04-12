@@ -5,6 +5,7 @@ import com.message.http.ResponseResult;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -50,7 +51,7 @@ public class WebMvcExceptionHandler {
     //整合请求方式、请求方法体、请求参数的异常
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class,
             HttpMessageNotReadableException.class,InvalidRequestException.class,
-            JSONException.class})
+            JSONException.class, MissingServletRequestParameterException.class})
     public ResponseResult paramError(Exception e){
         System.out.println("请求方式或参数错误:"+e.getMessage());
         return ResponseResult.invalid_request();
