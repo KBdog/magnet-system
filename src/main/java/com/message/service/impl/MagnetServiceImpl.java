@@ -7,6 +7,8 @@ import com.message.utils.MagnetDownloadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.servlet.ServletOutputStream;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.List;
 @Service
 //autowired自动装配优先选择此实现类
 @Primary
+//交给spring进行事务处理,发生异常会自动回滚
+@Transactional
 public class MagnetServiceImpl implements MagnetService {
     @Autowired
     private MagnetMapper mapper;
@@ -35,7 +39,15 @@ public class MagnetServiceImpl implements MagnetService {
 
     @Override
     public Integer addMagnet(Magnet magnet) {
-        return mapper.addMagnet(magnet);
+        Integer result=null;
+        try {
+            result=mapper.addMagnet(magnet);
+        }catch (Exception e){
+            //发生异常手动回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
