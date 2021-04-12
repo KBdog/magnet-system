@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
@@ -37,12 +38,19 @@ public class MagnetController {
     //模糊查询
     //模糊查询要检查token,不加passlogin注释
     @RequestMapping(value="/keyword",method = RequestMethod.POST)
-    private ResponseResult queryMagnetByKey(@RequestBody String jsonString){
+    private ResponseResult queryMagnetByKey(@RequestBody String jsonString, HttpServletRequest request){
         JSONObject jsonObject = JSONObject.parseObject(jsonString);
         String keyword = jsonObject.getString("keyword");
-        if(jsonObject.size()!=1||keyword==null){
+        Integer uid=jsonObject.getInteger("uid");
+        if(jsonObject.size()!=2||keyword==null){
             //抛请求参数格式错误异常
             throw new InvalidRequestException(HttpEnum.INVALID_REQUEST);
+        }
+        Integer subjectUid=Integer.parseInt((String) request.getAttribute("subject"));
+        //对发送token的用户uid进行验证，防止其他用户模拟token发送请求
+        if(subjectUid!=uid){
+            System.out.println("用户uid跟token对应不上:"+"用户uid-"+uid+"|token_uid-"+subjectUid);
+            return ResponseResult.unauthorized();
         }
         System.out.println("keyword:"+keyword);
         List<Magnet> magnetList=service.queryMagnetByKey(keyword);

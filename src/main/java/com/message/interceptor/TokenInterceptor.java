@@ -6,6 +6,7 @@ import com.message.http.ResponseResult;
 import com.message.utils.JWTUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -15,9 +16,12 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.util.Date;
 
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
+    @Value("${custom.jwt.issuer}")
+    private String issuer;
     @Autowired
     private JWTUtils jwtUtil;
     //在业务处理请求之前处理
@@ -52,6 +56,12 @@ public class TokenInterceptor implements HandlerInterceptor {
             // HTTP请求头中TOKEN解析出的用户信息
             Claims claims = jwtUtil.parseToken(token);
             if(claims == null){
+                response.getWriter().write(JSONObject.toJSONString(ResponseResult.unauthorized()));
+                return false;
+            }
+            //签发者验证
+            String claimsIssuer = claims.getIssuer();
+            if(!issuer.equals(claimsIssuer)){
                 response.getWriter().write(JSONObject.toJSONString(ResponseResult.unauthorized()));
                 return false;
             }
