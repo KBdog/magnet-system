@@ -43,6 +43,7 @@ public class MagnetServiceImpl implements MagnetService {
         try {
             result=mapper.addMagnet(magnet);
         }catch (Exception e){
+
             //发生异常手动回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             e.printStackTrace();
