@@ -26,12 +26,12 @@
     </select>
     <insert id="addMagnet" parameterType="com.message.entity.Magnet">
         insert into magnet(name,magnet)
-        values ('${name}','${magnet}')
+        values (#{addMagnet.name},#{addMagnet.magnet})
     </insert>
     <delete id="deleteMagnet" parameterType="com.message.entity.Magnet">
         delete from magnet
-        where name='${name}'
-        and magnet='${magnet}'
+        where name=#{deleteMagnet.name}
+        and magnet=#{deleteMagnet.magnet}
     </delete>
     <!--批量删除磁力-->
     <delete id="batchDeleteMagnet">

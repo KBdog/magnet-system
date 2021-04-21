@@ -12,8 +12,8 @@ public interface MagnetMapper {
     List<Magnet> queryAllMagnet();
     List<Magnet> queryMagnetByKey(@Param("key") String keyword);
     List<Magnet> pagingQueryMagnet(@Param("currentPage") Integer currentPage,@Param("pageNum") Integer pageNum);
-    Integer addMagnet(Magnet magnet);
-    Integer deleteMagnet(Magnet magnet);
+    Integer addMagnet(@Param("addMagnet") Magnet magnet);
+    Integer deleteMagnet(@Param("deleteMagnet") Magnet magnet);
     Integer updateMagnet(@Param("oldMagnet") Magnet magnet1,@Param("newMagnet") Magnet magnet2);
     List<Magnet> queryTimeReport(@Param("start") String start,@Param("end") String end);
     @Select("select count(*) from magnet where time between #{start} and #{end}")
