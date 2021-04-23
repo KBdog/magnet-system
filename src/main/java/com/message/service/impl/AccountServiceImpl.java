@@ -8,6 +8,8 @@ import com.message.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -20,41 +22,56 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private RedisUtils utils;
     @Override
+    @Transactional
     public Integer validateAccount(Account account) {
         return mapper.validateAccount(account);
     }
 
     @Override
+    @Transactional
     public Account getAccount(Account account) {
         return mapper.getAccount(account);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Account> queryAll() {
         return mapper.queryAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Account> pagingQueryAccount(Integer currentPage, Integer pageNum) {
         return mapper.pagingQueryAccount(currentPage,pageNum);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Account> queryAccountByKey(String keyword) {
         return mapper.queryAccountByKey(keyword);
     }
 
     @Override
+    @Transactional
     public Integer addUser(Account user) {
-        return mapper.addUser(user);
+        Integer result=-1;
+        try {
+            result=mapper.addUser(user);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            return result;
+        }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Account checkExist(String username) {
         return mapper.checkExist(username);
     }
 
     @Override
+    @Transactional
     public Integer deleteUser(Integer uid) {
         Integer count=mapper.deleteUser(uid);
         if(count>0){
@@ -64,6 +81,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public Integer updateUser(Account user) {
         Integer count=mapper.updateUser(user);
         //数据库修改成功,缓存也作修改
@@ -74,6 +92,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Account queryById(Integer uid) {
         Account account=null;
         //先从redis中获取数据
