@@ -21,21 +21,21 @@ public class UsersController {
     private AccountService service;
     //查询所有用户
     @PassLogin
-    @RequestMapping("/all")
+    @RequestMapping(value = "/all",method = RequestMethod.GET)
     private ResponseResult queryAllUser(){
         List<Account>accountList=service.queryAll();
         return ResponseResult.ok(accountList);
     }
     //分页查询
     @PassLogin
-    @RequestMapping("/all/{currentPage}/{pageNum}")
+    @RequestMapping(value = "/all/{currentPage}/{pageNum}",method = RequestMethod.GET)
     private ResponseResult pagingQueryMagnet(@PathVariable("currentPage") Integer currentPage, @PathVariable("pageNum") Integer pageNum){
         List<Account>accountList=service.pagingQueryAccount((currentPage-1)*pageNum,pageNum);
         return ResponseResult.ok(accountList);
     }
     //模糊查询
     @PassLogin
-    @RequestMapping("/keyword")
+    @RequestMapping(value = "/keyword",method = RequestMethod.POST)
     private ResponseResult queryMagnetByKey(@RequestBody Map<String,String> jsonKeyword) throws JsonProcessingException {
         String keyword="";
         for (Map.Entry<String, String> tmp:jsonKeyword.entrySet()) {
@@ -47,7 +47,7 @@ public class UsersController {
     }
     //根据id查用户
     @PassLogin
-    @RequestMapping("/id")
+    @RequestMapping(value="/id",method = RequestMethod.GET)
     private Account queryById(@RequestParam("uid")Integer id){
         return service.queryById(id);
     }
@@ -56,8 +56,8 @@ public class UsersController {
 
     //添加用户
     @PassLogin
-    @RequestMapping("/add_user")
-    private boolean addUser(@RequestBody String jsonString) throws JsonProcessingException {
+    @RequestMapping(value = "/add_user",method = RequestMethod.POST)
+    private boolean addUser(@RequestBody String jsonString) {
         boolean flag=false;
         JSONObject jsonObject= JSON.parseObject(jsonString);
         Account account=new Account();
@@ -84,7 +84,7 @@ public class UsersController {
     }
     //查看用户是否存在
     @PassLogin
-    @RequestMapping("/check")
+    @RequestMapping(value="/check",method = RequestMethod.GET)
     private boolean checkExist(@RequestParam("username")String username){
         boolean flag=true;
         Account account = service.checkExist(username);
@@ -95,7 +95,7 @@ public class UsersController {
     }
     //根据uid删除用户
     @PassLogin
-    @RequestMapping("/delete")
+    @RequestMapping(value = "/delete",method = RequestMethod.GET)
     private boolean deleteUser(@RequestParam("uid") Integer uid){
         boolean flag=false;
         Integer count;
@@ -108,7 +108,7 @@ public class UsersController {
     }
     //更新用户
     @PassLogin
-    @RequestMapping("/update")
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
     private boolean updateUser(@RequestBody String jsonString){
         boolean flag=false;
         JSONObject jsonObject=JSON.parseObject(jsonString);

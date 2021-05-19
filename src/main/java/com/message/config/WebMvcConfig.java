@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 //webmvc配置
@@ -18,15 +19,22 @@ public class WebMvcConfig implements WebMvcConfigurer {
     //拦截器设置
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new ApiInterceptor()).addPathPatterns("/**");
-//        registry.addInterceptor(tokenInterceptor()).addPathPatterns("/**");
-        registry.addInterceptor(tokenInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(tokenInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/webjars/**")
+                .excludePathPatterns("/swagger-ui")
+                .excludePathPatterns("/swagger-resources/**")
+                .excludePathPatterns("/error");
     }
 
-//    @Bean
-//    public TokenInterceptor tokenInterceptor(){
-//        return new TokenInterceptor();
-//    }
+    //访问静态资源
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/swagger-ui.html","/csrf")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
 
     //跨域设置
     @Override
