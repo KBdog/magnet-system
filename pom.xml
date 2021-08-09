@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.message</groupId>
-    <artifactId>system</artifactId>
+    <artifactId>magnet-system</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>system</name>
     <description>Demo project for Spring Boot</description>
