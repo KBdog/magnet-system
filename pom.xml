@@ -11,7 +11,7 @@
     <groupId>com.message</groupId>
     <artifactId>magnet-system</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>system</name>
+    <name>magnet-system</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
